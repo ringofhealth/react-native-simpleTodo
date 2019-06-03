@@ -2,27 +2,47 @@ import React, {Component} from 'react'
 import {View, ScrollView, StyleSheet} from 'react-native'
 import Heading from './Heading'
 import Input from './Input'
+import Button from './Button'
 let todoIndex = 0
 
 class App extends Component {
-  constructor(){
+  constructor() {
     super()
-    this.state ={
-      inputValue:'',
+    this.state = {
+      inputValue: '',
       todos: [],
       type: "All"
     }
+    this.submitTodo = this.submitTodo.bind(this)
   }
-  inputChange(inputValue){
+  inputChange(inputValue) {
     this.setState({inputValue})
   }
+  submitTodo() {
+    todoIndex++
+    const todo = {
+      title: this.state.inputValue,
+      todoIndex,
+      complete: false
+    }
+    this.setState({
+      todos: [
+        ...this.state.todos,
+        todo
+      ],
+      inputValue: ''
+    }, () => console.log('state', this.state))
+
+  }
+
   render() {
     const {inputValue} = this.state
     return (<View style={styles.container}>
       <ScrollView keyboardShouldPersistTaps='always' style={styles.content}>
         <View/>
-        <Heading />
-        <Input inputValue={inputValue} inputChange={(text) => this.inputChange(text)} />
+        <Heading/>
+        <Input inputValue={inputValue} inputChange={(text) => this.inputChange(text)}/>
+        <Button submitTodo={this.submitTodo} />
       </ScrollView>
     </View>)
   }
