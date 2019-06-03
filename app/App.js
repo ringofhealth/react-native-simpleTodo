@@ -4,6 +4,7 @@ import Heading from './Heading'
 import Input from './Input'
 import Button from './Button'
 import TodoList from './TodoList'
+import TabBar from './TabBar'
 
 let todoIndex = 0
 
@@ -18,9 +19,13 @@ class App extends Component {
     this.submitTodo = this.submitTodo.bind(this)
     this.deleteTodo = this.deleteTodo.bind(this)
     this.toggleComplete = this.toggleComplete.bind(this)
+    this.setType = this.setType.bind(this)
   }
   inputChange(inputValue) {
     this.setState({inputValue})
+  }
+  setType(type) {
+    this.setState({type})
   }
   submitTodo() {
     if (this.state.inputValue.match(/^\s*$/)) {
@@ -57,15 +62,15 @@ class App extends Component {
   }
 
   render() {
-    const {inputValue, todos} = this.state
+    const {todos, inputValue, type} = this.state
     return (<View style={styles.container}>
       <ScrollView keyboardShouldPersistTaps='always' style={styles.content}>
-        <View/>
         <Heading/>
         <Input inputValue={inputValue} inputChange={(text) => this.inputChange(text)}/>
-        <TodoList todos={todos} toggleComplete={this.toggleComplete} deleteTodo={this.deleteTodo}/>
+        <TodoList type={type} toggleComplete={this.toggleComplete} deleteTodo={this.deleteTodo} todos={todos}/>
         <Button submitTodo={this.submitTodo}/>
       </ScrollView>
+      <TabBar type={type} setType={this.setType}/>
     </View>)
   }
 }
